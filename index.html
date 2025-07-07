@@ -18,6 +18,35 @@
     <link rel="stylesheet" href="css/index.css">
 </head>
 <body class="page-bg text-white">
+    <!-- 首页欢迎弹窗 -->
+    <div id="welcomeModal" class="fixed inset-0 bg-black/90 flex items-center justify-center z-[60]">
+        <div class="bg-[#111] p-8 rounded-lg border border-[#333] w-11/12 max-w-2xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-center mb-6">
+                <svg class="w-16 h-16 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold gradient-text mb-6 text-center">欢迎使用恒流TV</h2>
+            <div class="text-gray-300 space-y-4">
+                <p class="text-center text-lg">免费在线视频搜索与观看平台</p>
+                <div class="bg-[#151515] p-4 rounded-lg">
+                    <p class="mb-2"><strong class="text-blue-400">最新公告：</strong></p>
+                    <p id="welcomeMessage" class="text-sm">
+                        1. 新增多个视频源，搜索更全面<br>
+                        2. 优化播放体验，减少卡顿<br>
+                        3. 修复已知问题，提升稳定性
+                    </p>
+                </div>
+                <p class="text-sm text-gray-400 text-center mt-4">请遵守相关法律法规，合理使用本平台</p>
+            </div>
+            <div class="mt-6 flex justify-center">
+                <button id="closeWelcomeBtn" class="px-6 py-3 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white font-semibold rounded-lg hover:shadow-lg transition-all duration-300">
+                    开始使用
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- 将历史记录按钮移到左上角，并缩小尺寸 -->
     <div class="fixed top-4 left-4 z-10">
         <button onclick="toggleHistory(event)" class="bg-[#222] hover:bg-[#333] border border-[#333] hover:border-white rounded-lg px-3 py-1.5 transition-colors" aria-label="观看历史">
@@ -192,7 +221,7 @@
                         <h1 class="text-5xl font-bold gradient-text">恒流TV</h1>
                     </a>
                 </div>
-                <p class="text-gray-400 mb-8">恒流TV———来自永恒之爱</p>
+                <p class="text-gray-400 mb-8">自由观影，畅享精彩</p>
             </header>
             
 
@@ -437,5 +466,45 @@
 
     <!-- 添加弹窗和URL搜索参数处理脚本 -->
     <script src="js/index-page.js"></script>
+
+    <!-- 欢迎弹窗控制脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 检查是否已经显示过免责声明
+            const hasAcceptedDisclaimer = localStorage.getItem('hasAcceptedDisclaimer');
+            
+            // 如果免责声明已经接受，则显示欢迎弹窗
+            if (hasAcceptedDisclaimer === 'true') {
+                const welcomeModal = document.getElementById('welcomeModal');
+                
+                // 关闭按钮事件
+                document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
+                    welcomeModal.classList.add('hidden');
+                });
+                
+                // 3秒后自动关闭弹窗（可选）
+                setTimeout(function() {
+                    welcomeModal.classList.add('hidden');
+                }, 10000);
+            } else {
+                // 如果免责声明未接受，则在免责声明关闭后显示欢迎弹窗
+                document.getElementById('acceptDisclaimerBtn').addEventListener('click', function() {
+                    setTimeout(function() {
+                        const welcomeModal = document.getElementById('welcomeModal');
+                        welcomeModal.classList.remove('hidden');
+                        
+                        document.getElementById('closeWelcomeBtn').addEventListener('click', function() {
+                            welcomeModal.classList.add('hidden');
+                        });
+                        
+                        // 3秒后自动关闭弹窗（可选）
+                        setTimeout(function() {
+                            welcomeModal.classList.add('hidden');
+                        }, 10000);
+                    }, 300);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
